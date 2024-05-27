@@ -5,7 +5,6 @@ import pandas as pd
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Veritabanı bağlantısı ve tablo oluşturma
 def initialize_db():
     conn = sqlite3.connect('stok_takip.db')
     cursor = conn.cursor()
@@ -17,7 +16,6 @@ def initialize_db():
     conn.commit()
     conn.close()
 
-# Ürünleri listeleme
 @app.route('/')
 def index():
     conn = sqlite3.connect('stok_takip.db')
@@ -27,7 +25,6 @@ def index():
     conn.close()
     return render_template('index.html', urunler=urunler)
 
-# Ürün ekleme
 @app.route('/add', methods=['POST'])
 def add():
     barkod = request.form['barkod']
@@ -51,7 +48,6 @@ def add():
         flash('Lütfen tüm alanları doldurun.', 'error')
     return redirect(url_for('index'))
 
-# Ürün silme
 @app.route('/delete/<string:barkod>')
 def delete(barkod):
     conn = sqlite3.connect('stok_takip.db')
@@ -62,7 +58,6 @@ def delete(barkod):
     flash('Ürün başarıyla silindi.')
     return redirect(url_for('index'))
 
-# Ürün güncelleme
 @app.route('/update', methods=['POST'])
 def update():
     barkod = request.form['barkod']
@@ -82,7 +77,6 @@ def update():
         flash('Lütfen barkod ve yeni miktarı girin.', 'error')
     return redirect(url_for('index'))
 
-# Ürün arama
 @app.route('/search', methods=['GET'])
 def search():
     arama_kriteri = request.args.get('query')
@@ -93,7 +87,6 @@ def search():
     conn.close()
     return render_template('index.html', urunler=urunler)
 
-# Excel'den ürün ekleme
 @app.route('/import', methods=['POST'])
 def import_excel():
     file = request.files['file']

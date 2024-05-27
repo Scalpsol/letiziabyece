@@ -3,7 +3,6 @@ from tkinter import ttk, messagebox, filedialog, simpledialog
 import sqlite3
 import pandas as pd
 
-# Veritabanı bağlantısı ve tablo oluşturma
 def initialize_db():
     conn = sqlite3.connect('stok_takip.db')
     cursor = conn.cursor()
@@ -15,7 +14,6 @@ def initialize_db():
     conn.commit()
     conn.close()
 
-# Ürün ekleme
 def urun_ekle():
     def ekle():
         barkod = barkod_entry.get()
@@ -58,7 +56,6 @@ def urun_ekle():
 
     tk.Button(ekle_pencere, text="Ekle", command=ekle).grid(row=3, columnspan=2, pady=10)
 
-# Ürün silme
 def urun_sil():
     barkod = simpledialog.askstring("Barkod", "Silmek istediğiniz ürünün barkodunu girin:")
     if barkod:
@@ -72,7 +69,6 @@ def urun_sil():
     else:
         messagebox.showerror("Hata", "Lütfen bir barkod girin.")
 
-# Ürün güncelleme
 def urun_guncelle():
     barkod = simpledialog.askstring("Barkod", "Güncellemek istediğiniz ürünün barkodunu girin:")
     yeni_miktar = simpledialog.askinteger("Yeni Miktar", "Yeni miktarı girin:")
@@ -87,7 +83,6 @@ def urun_guncelle():
     else:
         messagebox.showerror("Hata", "Lütfen barkod ve yeni miktarı girin.")
 
-# Ürünleri listeleme ve güncelleme
 def urunleri_guncelle():
     for i in tree.get_children():
         tree.delete(i)
@@ -101,7 +96,6 @@ def urunleri_guncelle():
     for urun in urunler:
         tree.insert("", "end", values=(urun[1], urun[2], urun[3]))
 
-# Arama fonksiyonu
 def urun_ara():
     arama_kriteri = arama_entry.get()
     for i in tree.get_children():
@@ -116,7 +110,6 @@ def urun_ara():
     for urun in urunler:
         tree.insert("", "end", values=(urun[1], urun[2], urun[3]))
 
-# Excel'den ürün ekleme
 def excelden_urun_ekle():
     file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
     if file_path:
@@ -139,7 +132,6 @@ def excelden_urun_ekle():
         except Exception as e:
             messagebox.showerror("Hata", f"Ürünler eklenirken hata oluştu: {e}")
 
-# Ana uygulama
 def main():
     initialize_db()
 
